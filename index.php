@@ -207,25 +207,42 @@ get_header();
         </form>
     </section>
 
-    <!--New cafe -->
-    <section class="post" id="post">
+<!-- New cafe -->
+<section class="post" id="post">
     <h1 class="heading">New Caffe <span>new menu</span></h1>
 
     <div class="box-container">
-        <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-            <a href="#" class="box">
-                <div class="content">
-                <div><?php the_excerpt(); ?></div>
-                <a href="<?php the_permalink(); ?>" class="btn">Đọc thêm</a>
-           
-                </div>           
-            </a>
+        <?php
+        $args = array(
+            'post_type' => 'post',
+            'posts_per_page' => -1,
+        );
 
-        <?php endwhile; else : ?>
-            <p>Chưa có bài viết nào được đăng.</p>
-        <?php endif; ?>
+        $query = new WP_Query($args);
+
+        if ($query->have_posts()) :
+            while ($query->have_posts()) : $query->the_post(); ?>
+                <div class="box">
+                    <div class="image">
+                       <?php the_post_thumbnail(); ?>
+                    </div>
+                    <div class="content">
+                        <h2><?php the_title(); ?></h2>
+                        <p><?php the_content(); ?></p>
+                    </div>
+                </div>
+            <?php endwhile;
+        else : ?>
+            <p>Chưa có món cà phê mới nào được đăng.</p>
+        <?php endif;
+        wp_reset_postdata();
+        ?>
     </div>
-    </section>
+</section>
+
+
+
+
 
    
 
